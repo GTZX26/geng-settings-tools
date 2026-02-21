@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/python3 /usr/lib/geng-setting-tools/geng_settings_tools.py "$@"

@@ -1,0 +1,10 @@
+*.deb
+*.build
+*.buildinfo
+*.changes
+*.dsc
+*.tar.*
+*.substvars
+.debhelper/
+debian/files
+debian/geng-setting-tools/
