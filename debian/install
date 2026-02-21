@@ -1,0 +1,4 @@
+src/geng_settings_tools.py usr/lib/geng-setting-tools/
+packaging/geng-setting-tools.desktop usr/share/applications/
+packaging/io.github.gengx26.geng-setting-tools.metainfo.xml usr/share/metainfo/
+packaging/geng-setting-tools usr/bin/

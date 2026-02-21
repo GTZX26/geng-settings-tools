@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.gengx26.geng-setting-tools</id>
+  <name>Geng Setting Tools</name>
+  <summary>GUI helper for Linux Mint Cinnamon first-run settings</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <developer id="io.github.gengx26">
+    <name>Thammasorn Musikaphan (Geng)</name>
+  </developer>
+  <launchable type="desktop-id">geng-setting-tools.desktop</launchable>
+  <description>
+    <p>
+      Geng Setting Tools provides one-click keyboard/language setup and system maintenance shortcuts for Linux Mint Cinnamon.
+    </p>
+  </description>
+  <url type="homepage">https://github.com</url>
+  <categories>
+    <category>Settings</category>
+    <category>System</category>
+  </categories>
+  <releases>
+    <release version="1.1.0" date="2026-02-21"/>
+  </releases>
+  <content_rating type="oars-1.1"/>
+</component>
