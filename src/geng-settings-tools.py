@@ -12,7 +12,7 @@ from gi.repository import Gtk, Gdk, Gio, GLib
 
 class GengSettingsTools(Gtk.Window):
     def __init__(self):
-        super().__init__(title="Geng Settings Tools v2.0.4")
+        super().__init__(title="Geng Settings Tools v2.0.5")
         self.set_default_size(900, 650)
         self.set_border_width(10)
         self.set_position(Gtk.WindowPosition.CENTER)
@@ -199,20 +199,33 @@ class GengSettingsTools(Gtk.Window):
         self.stack.add_titled(page, "ui", "ปรับแต่ง UI")
 
     def init_about_page(self):
-        page = self.create_page_box("เกี่ยวกับ")
-        page.set_halign(Gtk.Align.CENTER)
+        # Create a scrolled window for the about page content
+        scrolled_window = Gtk.ScrolledWindow()
+        scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        
+        page_content_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20)
+        page_content_box.set_margin_start(30)
+        page_content_box.set_margin_end(30)
+        page_content_box.set_margin_top(30)
+        page_content_box.set_margin_bottom(30)
+        page_content_box.set_halign(Gtk.Align.CENTER)
+        
+        title = Gtk.Label()
+        title.set_markup("<span size=\'xx-large\' weight=\'bold\'>เกี่ยวกับ</span>")
+        title.set_halign(Gtk.Align.START)
+        page_content_box.pack_start(title, False, False, 0)
 
         label = Gtk.Label()
         label.set_markup(
-            "<span size=\'xx-large\' weight=\'bold\' foreground=\'#00ADB5\'>Geng Settings Tools</span>\n"
-            "<span>เวอร์ชัน 2.0.4 (GTK Edition)</span>\n\n"
+            "<span size=\'x-large\' weight=\'bold\' foreground=\'#00ADB5\'>Geng Settings Tools</span>\n"
+            "<span>เวอร์ชัน 2.0.5 (GTK Edition)</span>\n\n"
             "<b>ผู้พัฒนา:</b> คุณธรรมสรณ์ มุสิกพันธ์ (Geng)\n"
             "<b>Email:</b> gtzx26@gmail.com\n\n"
             "เครื่องมือนี้สร้างขึ้นเพื่อช่วยให้คนไทยใช้งาน Linux ได้ง่ายขึ้น\n"
             "ขอขอบคุณที่ร่วมเป็นส่วนหนึ่งของครอบครัว Open Source"
         )
         label.set_justify(Gtk.Justification.CENTER)
-        page.pack_start(label, False, False, 0)
+        page_content_box.pack_start(label, False, False, 0)
 
         # Donate Section
         donate_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -224,11 +237,11 @@ class GengSettingsTools(Gtk.Window):
         donate_title.set_markup("<span size=\'large\' weight=\'bold\' foreground=\'#F9ED69\'>☕ สนับสนุนค่ากาแฟผู้พัฒนา</span>")
         donate_box.pack_start(donate_title, False, False, 0)
 
-        # QR Code (assuming it's in the same assets folder)
+        # QR Code (assuming it\'s in the same assets folder)
         qr_path = "/usr/share/gst-assets/qrcode.png"
         if os.path.exists(qr_path):
             qr_image = Gtk.Image.new_from_file(qr_path)
-            qr_image.set_pixel_size(150)
+            qr_image.set_pixel_size(200) # Adjusted size for better fit
             donate_box.pack_start(qr_image, False, False, 0)
 
         bank_info = Gtk.Label()
@@ -242,9 +255,10 @@ class GengSettingsTools(Gtk.Window):
         bank_info.set_line_wrap(True)
         donate_box.pack_start(bank_info, False, False, 0)
 
-        page.pack_start(donate_box, False, False, 0)
-
-        self.stack.add_titled(page, "about", "เกี่ยวกับ")
+        page_content_box.pack_start(donate_box, False, False, 0)
+        
+        scrolled_window.add(page_content_box)
+        self.stack.add_titled(scrolled_window, "about", "เกี่ยวกับ")
 
     def run_command(self, cmd):
         try:
@@ -262,16 +276,16 @@ class GengSettingsTools(Gtk.Window):
             actual_cmd = cmd.replace("sudo ", "")
             # For pkexec, we need to quote the inner command for bash -c, then the whole pkexec command for the outer bash -c
             pkexec_command_str = f"pkexec bash -c {shlex.quote(actual_cmd)}"
-            full_cmd = f"gnome-terminal -- bash -c {shlex.quote(pkexec_command_str + '; echo; echo กด Enter เพื่อปิด...; read')}"
+            full_cmd = f"gnome-terminal -- bash -c {shlex.quote(pkexec_command_str + \'; echo; echo กด Enter เพื่อปิด...; read\')}"
         else:
-            full_cmd = f"gnome-terminal -- bash -c {shlex.quote(cmd + '; echo; echo กด Enter เพื่อปิด...; read')}"
+            full_cmd = f"gnome-terminal -- bash -c {shlex.quote(cmd + \'; echo; echo กด Enter เพื่อปิด...; read\')}"
         
         # Use Popen and check return code to handle dismissed pkexec dialogs more gracefully
         process = subprocess.Popen(full_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
         
         if process.returncode != 0 and "Error executing command as another user: Request dismissed" not in stderr.decode():
-            # Only show error if it's not a dismissed dialog
+            # Only show error if it\'s not a dismissed dialog
             self.show_message("ข้อผิดพลาด", f"ไม่สามารถดำเนินการได้: {stderr.decode().strip()}", Gtk.MessageType.ERROR)
 
     def show_message(self, title, message, msg_type=Gtk.MessageType.INFO):
