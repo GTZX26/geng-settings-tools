@@ -1,15 +1,10 @@
-Source: geng-setting-tools
+Package: geng-settings-tools
+Version: 2.0.0
 Section: utils
 Priority: optional
-Maintainer: Thammasorn Musikaphan (Geng) <gtzx26@gmail.com>
-Build-Depends: debhelper-compat (= 13), dh-python
-Standards-Version: 4.7.0
-Rules-Requires-Root: no
-Homepage: https://github.com/gengx26/geng-settings-tools
-
-Package: geng-setting-tools
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}, python3, python3-pyqt6, gsettings-desktop-schemas, gnome-terminal
-Description: Linux Mint Cinnamon setup helper with Thai UI
- Geng Setting Tools (GST) is a PyQt6 desktop utility for Linux Mint Cinnamon.
- It includes quick actions for keyboard language switching and system maintenance.
+Depends: python3, python3-gi, gir1.2-gtk-3.0, gir1.2-handy-1, policykit-1, gnome-terminal
+Maintainer: Thammasorn Musikapun <gtzx26@gmail.com>
+Description: Geng Settings Tools for Linux Mint Cinnamon.
+ A simple tool to manage keyboard settings, system updates, gaming setup, and UI tweaks.
+ Designed for beginners switching from Windows/macOS to Linux Mint.

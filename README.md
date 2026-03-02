@@ -1,66 +1,35 @@
-# Geng Setting Tools
+# Geng Settings Tools (GST) 🛠️
 
-แอปเดสก์ท็อป (PyQt6) สำหรับ Linux Mint 22.3 Cinnamon เพื่อช่วยตั้งค่าคีย์บอร์ด/ภาษา และเครื่องมือดูแลระบบแบบคลิกเดียว
+**Geng Settings Tools** เป็นแอปพลิเคชันที่ออกแบบมาเพื่อช่วยให้ผู้ใช้ Linux Mint (โดยเฉพาะ Cinnamon Edition) สามารถตั้งค่าระบบที่ซับซ้อนได้ง่ายๆ เพียงแค่ "คลิกเดียว" เหมาะสำหรับผู้ที่ย้ายมาจาก Windows หรือ macOS และยังไม่คุ้นเคยกับการใช้ Terminal
 
-## โครงสร้างโปรเจกต์
+## ✨ คุณสมบัติหลัก (One-Click Solutions)
 
-- `src/geng_settings_tools.py` — โค้ดแอปหลัก
-- `debian/` — ไฟล์แพ็กเกจ Debian สำหรับสร้าง `GST.deb`
-- `packaging/geng-setting-tools.desktop` — เมนูแอป
-- `packaging/io.github.gengx26.geng-setting-tools.metainfo.xml` — AppStream metadata (ให้ Software Manager แสดงข้อมูล)
-- `assets/README.md` — วิธีใส่ `icon.png`/`qrcode.png` เองโดยไม่ commit binary
+- ⌨️ **Keyboard & Language:** ตั้งค่าปุ่มสลับภาษา (Grave Accent ~) หรือ Alt+Shift ได้ทันที
+- 🚀 **System Optimizer:** ล้างแคช, ลบแพ็กเกจที่ไม่ได้ใช้งาน และเพิ่มความเร็วให้ระบบ
+- 🎬 **Multimedia Ready:** ติดตั้ง Codecs ที่จำเป็นสำหรับการดูหนังฟังเพลง
+- 🎮 **Gaming Ready:** ติดตั้ง Steam, Wine และเครื่องมือสำหรับการเล่นเกม
+- 🎨 **UI Tweaks:** สลับ Dark Mode และปรับแต่งหน้าตาได้ง่ายๆ
 
-## วิธี build เป็นไฟล์ .deb
+## 🖥️ มาตรฐาน XApps
+GST เวอร์ชัน 2.0 ถูกพัฒนาใหม่ด้วย **GTK3 (PyGObject)** เพื่อให้มีความสวยงามและเป็นเนื้อเดียวกับ Linux Mint Cinnamon ตามมาตรฐาน XApps
 
-บน Linux Mint/Ubuntu:
+## 🛡️ ความปลอดภัย
+- ใช้ **Polkit (pkexec)** ในการขอสิทธิ์ Root เฉพาะเมื่อจำเป็น
+- คำสั่งทุกอย่างถูกตรวจสอบว่าปลอดภัยต่อระบบปฏิบัติการ
 
-```bash
-sudo apt update
-sudo apt install -y build-essential devscripts debhelper dh-python
+## 📦 การติดตั้ง (Installation)
 
-dpkg-buildpackage -us -uc -b
-```
+### สำหรับ Linux Mint / Ubuntu (.deb)
+1. ดาวน์โหลดไฟล์ `.deb` จากหน้า [Releases](https://github.com/GTZX26/geng-settings-tools/releases)
+2. ดับเบิลคลิกเพื่อติดตั้งผ่าน GDebi หรือใช้คำสั่ง:
+   ```bash
+   sudo apt install ./geng-settings-tools_2.0.0_all.deb
+   ```
 
-ไฟล์ `.deb` จะถูกสร้างไว้ที่โฟลเดอร์ชั้นบนของโปรเจกต์ เช่น:
+## 🤝 การสนับสนุน (Support)
+หากคุณพบปัญหาหรือมีข้อเสนอแนะ สามารถเปิด Issue ได้ที่นี่ หรือสนับสนุนผู้พัฒนาผ่าน:
+- **PayPal:** thammasorn2456@gmail.com
+- **K-Bank:** 119-2-45517-7 (นาย ธรรมสรณ์ มุสิกพันธ์)
 
-- `../geng-setting-tools_1.1.0-2_all.deb`
-
-ติดตั้งด้วย:
-
-```bash
-sudo apt install ../geng-setting-tools_1.1.0-2_all.deb
-```
-
-## จะให้ขึ้นใน Software Manager ต้องทำอย่างไร
-
-Software Manager จะดึงแอปจาก “repository” (APT repo / PPA / distro repo) ไม่ได้ดึงตรงจาก GitHub โดยตรง
-
-### ตัวเลือกที่แนะนำสำหรับมือใหม่
-
-1. **เริ่มจากแจกไฟล์ `.deb` ใน GitHub Releases**
-   - คนทั่วไปดาวน์โหลดง่าย
-   - ยังไม่ขึ้นใน Software Manager อัตโนมัติ
-2. **ทำ APT repository เอง** (เช่นใช้ `reprepro` + GitHub Pages/Cloudflare R2)
-   - ผู้ใช้เพิ่ม repo ครั้งเดียว แล้วได้อัปเดตผ่าน APT
-3. **ส่งเข้า repo ของ Linux Mint/Ubuntu (ยากที่สุด)**
-   - ถ้าผ่าน review จะขึ้น Software Manager โดยตรงแบบ native
-
-## ระบบอัปเดตจากคุณไปหาผู้ใช้
-
-ถ้าต้องการ “แจ้งอัปเดตอัตโนมัติ” แนะนำใช้ **APT repo ของคุณเอง**:
-
-- เมื่อออกเวอร์ชันใหม่ (`1.1.1`, `1.2.0`)
-- อัปโหลดแพ็กเกจใหม่เข้า repo
-- ผู้ใช้จะเห็นอัปเดตผ่าน Update Manager / Software Manager
-
-## ข้อแนะนำสำคัญ
-
-- วางโลโก้จริงเป็น `/usr/share/geng-setting-tools/icon.png` และ QR เป็น `/usr/share/geng-setting-tools/qrcode.png` ตอนติดตั้งจริง
-- เพิ่ม LICENSE (MIT) และหน้า Releases ให้ชัดเจน
-- สร้าง Issue template / changelog เพื่อให้ผู้ใช้แจ้งปัญหาได้ง่าย
-- ถ้าจะโตระยะยาว ให้พิจารณาทำ Flatpak ด้วย (Linux Mint รองรับดี)
-
-
-## หมายเหตุเรื่อง binary
-
-ถ้าระบบรีวิวแจ้งว่า **ไม่รองรับไบนารี** ให้เก็บรูปไว้ใน release asset หรือ package artifact แทนการ commit เข้า git โดยตรง
+## 📄 ใบอนุญาต (License)
+โครงการนี้อยู่ภายใต้ใบอนุญาต **GNU GPL-3.0**

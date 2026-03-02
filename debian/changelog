@@ -1,6 +1,0 @@
-geng-setting-tools (1.1.0-2) unstable; urgency=medium
-
-  * Remove binary image blobs from git history scope of this patch.
-  * Keep app working without embedded assets and document external asset flow.
-
- -- Thammasorn Musikaphan (Geng) <gtzx26@gmail.com>  Sat, 21 Feb 2026 11:00:00 +0000

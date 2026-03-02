@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=2.0
+Type=Application
+Name=Geng Settings Tools
+Comment=เครื่องมือช่วยตั้งค่าพื้นฐานสำหรับ Linux Mint Cinnamon
+Exec=python3 /usr/local/bin/geng-settings-tools
+Icon=geng-settings-tools
+Terminal=false
+Categories=Settings;System;
+Keywords=Settings;System;Tools;Geng;Mint;Cinnamon;
+StartupNotify=true
+X-GNOME-Autostart-enabled=true
