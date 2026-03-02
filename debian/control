@@ -1,9 +1,9 @@
 Package: geng-settings-tools
-Version: 2.0.1
+Version: 2.0.2
 Section: utils
 Priority: optional
 Architecture: all
-Depends: python3, python3-gi, gir1.2-gtk-3.0, gir1.2-handy-1, policykit-1, gnome-terminal
+Depends: python3, python3-gi, gir1.2-gtk-3.0, policykit-1, gnome-terminal
 Maintainer: Thammasorn Musikapun <gtzx26@gmail.com>
 Description: Geng Settings Tools for Linux Mint Cinnamon.
  A simple tool to manage keyboard settings, system updates, gaming setup, and UI tweaks.
