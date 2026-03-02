@@ -11,8 +11,9 @@ from gi.repository import Gtk, Gdk, Gio, GLib
 
 class GengSettingsTools(Gtk.Window):
     def __init__(self):
-        super().__init__(title="Geng Settings Tools v2.0.2")
+        super().__init__(title="Geng Settings Tools v2.0.3")
         self.set_default_size(900, 650)
+        self.set_border_width(10)
         self.set_position(Gtk.WindowPosition.CENTER)
 
         # Set application icon using Gtk.IconTheme
@@ -28,7 +29,7 @@ class GengSettingsTools(Gtk.Window):
         self.stack.set_transition_duration(300)
 
         self.stack_sidebar.set_stack(self.stack)
-        self.stack_sidebar.set_width_request(220)
+        self.stack_sidebar.set_size_request(220, -1)
 
         self.main_box.pack_start(self.stack_sidebar, False, False, 0)
         self.main_box.pack_start(self.stack, True, True, 0)
@@ -195,7 +196,7 @@ class GengSettingsTools(Gtk.Window):
         label = Gtk.Label()
         label.set_markup(
             "<span size=\'xx-large\' weight=\'bold\' foreground=\'#00ADB5\'>Geng Settings Tools</span>\n"
-            "<span>เวอร์ชัน 2.0.2 (GTK Edition)</span>\n\n"
+            "<span>เวอร์ชัน 2.0.3 (GTK Edition)</span>\n\n"
             "<b>ผู้พัฒนา:</b> คุณธรรมสรณ์ มุสิกพันธ์ (Geng)\n"
             "<b>Email:</b> gtzx26@gmail.com\n\n"
             "เครื่องมือนี้สร้างขึ้นเพื่อช่วยให้คนไทยใช้งาน Linux ได้ง่ายขึ้น\n"
