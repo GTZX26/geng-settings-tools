@@ -4,6 +4,7 @@ import os
 import subprocess
 import socket
 import getpass
+import shlex
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, Gio, GLib
@@ -11,7 +12,7 @@ from gi.repository import Gtk, Gdk, Gio, GLib
 
 class GengSettingsTools(Gtk.Window):
     def __init__(self):
-        super().__init__(title="Geng Settings Tools v2.0.3")
+        super().__init__(title="Geng Settings Tools v2.0.4")
         self.set_default_size(900, 650)
         self.set_border_width(10)
         self.set_position(Gtk.WindowPosition.CENTER)
@@ -185,8 +186,16 @@ class GengSettingsTools(Gtk.Window):
             "เปิดโหมดมืด",
             lambda b: self.run_command("gsettings set org.cinnamon.desktop.interface gtk-theme \'Mint-Y-Dark-Aqua\' && gsettings set org.cinnamon.theme name \'Mint-Y-Dark-Aqua\'")
         )
+        
+        card2 = self.create_action_card(
+            "สลับเป็น Light Mode",
+            "เปลี่ยนธีมของระบบให้เป็นโหมดสว่าง",
+            "เปิดโหมดสว่าง",
+            lambda b: self.run_command("gsettings set org.cinnamon.desktop.interface gtk-theme \'Mint-Y\' && gsettings set org.cinnamon.theme name \'Mint-Y\'")
+        )
 
         page.pack_start(card1, False, False, 0)
+        page.pack_start(card2, False, False, 0)
         self.stack.add_titled(page, "ui", "ปรับแต่ง UI")
 
     def init_about_page(self):
@@ -196,7 +205,7 @@ class GengSettingsTools(Gtk.Window):
         label = Gtk.Label()
         label.set_markup(
             "<span size=\'xx-large\' weight=\'bold\' foreground=\'#00ADB5\'>Geng Settings Tools</span>\n"
-            "<span>เวอร์ชัน 2.0.3 (GTK Edition)</span>\n\n"
+            "<span>เวอร์ชัน 2.0.4 (GTK Edition)</span>\n\n"
             "<b>ผู้พัฒนา:</b> คุณธรรมสรณ์ มุสิกพันธ์ (Geng)\n"
             "<b>Email:</b> gtzx26@gmail.com\n\n"
             "เครื่องมือนี้สร้างขึ้นเพื่อช่วยให้คนไทยใช้งาน Linux ได้ง่ายขึ้น\n"
@@ -205,24 +214,65 @@ class GengSettingsTools(Gtk.Window):
         label.set_justify(Gtk.Justification.CENTER)
         page.pack_start(label, False, False, 0)
 
+        # Donate Section
+        donate_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        donate_box.set_margin_top(20)
+        donate_box.set_halign(Gtk.Align.CENTER)
+        donate_box.set_valign(Gtk.Align.CENTER)
+
+        donate_title = Gtk.Label()
+        donate_title.set_markup("<span size=\'large\' weight=\'bold\' foreground=\'#F9ED69\'>☕ สนับสนุนค่ากาแฟผู้พัฒนา</span>")
+        donate_box.pack_start(donate_title, False, False, 0)
+
+        # QR Code (assuming it's in the same assets folder)
+        qr_path = "/usr/share/gst-assets/qrcode.png"
+        if os.path.exists(qr_path):
+            qr_image = Gtk.Image.new_from_file(qr_path)
+            qr_image.set_pixel_size(150)
+            donate_box.pack_start(qr_image, False, False, 0)
+
+        bank_info = Gtk.Label()
+        bank_info.set_markup(
+            "<b>กสิกรไทย (K-Bank):</b> 119-2-45517-7<br>"
+            "<b>ชื่อบัญชี:</b> นาย ธรรมสรณ์ มุสิกพันธ์<br><br>"
+            "<b>PayPal:</b> thammasorn2456@gmail.com<br><br>"
+            "<b>Bitcoin (BTC):</b> <span selectable=\'true\'>bc1q9vyeatst52eef7mv6fp2dpalxc6qwt9aug5rlt</span>"
+        )
+        bank_info.set_justify(Gtk.Justification.CENTER)
+        bank_info.set_line_wrap(True)
+        donate_box.pack_start(bank_info, False, False, 0)
+
+        page.pack_start(donate_box, False, False, 0)
+
         self.stack.add_titled(page, "about", "เกี่ยวกับ")
 
     def run_command(self, cmd):
         try:
             subprocess.run(cmd, shell=True, check=True)
             self.show_message("สำเร็จ", "ดำเนินการตั้งค่าเรียบร้อยแล้ว!")
+        except subprocess.CalledProcessError as e:
+            # Handle cases where the command itself fails (e.g., gsettings key not found)
+            self.show_message("ข้อผิดพลาด", f"ไม่สามารถดำเนินการได้: {e.stderr.decode().strip() if e.stderr else str(e)}", Gtk.MessageType.ERROR)
         except Exception as e:
             self.show_message("ข้อผิดพลาด", f"ไม่สามารถดำเนินการได้: {str(e)}", Gtk.MessageType.ERROR)
 
     def run_terminal_command(self, cmd):
-        # ใช้ pkexec สำหรับคำสั่งที่ต้องการสิทธิ์ root
+        # Use shlex.quote to properly escape commands for bash -c
         if "sudo" in cmd:
-            cmd = cmd.replace("sudo ", "")
-            full_cmd = f"gnome-terminal -- bash -c \'pkexec bash -c \\\"{cmd}\\\"; echo; echo กด Enter เพื่อปิด...; read\'"
+            actual_cmd = cmd.replace("sudo ", "")
+            # For pkexec, we need to quote the inner command for bash -c, then the whole pkexec command for the outer bash -c
+            pkexec_command_str = f"pkexec bash -c {shlex.quote(actual_cmd)}"
+            full_cmd = f"gnome-terminal -- bash -c {shlex.quote(pkexec_command_str + '; echo; echo กด Enter เพื่อปิด...; read')}"
         else:
-            full_cmd = f"gnome-terminal -- bash -c \'{cmd}; echo; echo กด Enter เพื่อปิด...; read\'"
-
-        subprocess.Popen(full_cmd, shell=True)
+            full_cmd = f"gnome-terminal -- bash -c {shlex.quote(cmd + '; echo; echo กด Enter เพื่อปิด...; read')}"
+        
+        # Use Popen and check return code to handle dismissed pkexec dialogs more gracefully
+        process = subprocess.Popen(full_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = process.communicate()
+        
+        if process.returncode != 0 and "Error executing command as another user: Request dismissed" not in stderr.decode():
+            # Only show error if it's not a dismissed dialog
+            self.show_message("ข้อผิดพลาด", f"ไม่สามารถดำเนินการได้: {stderr.decode().strip()}", Gtk.MessageType.ERROR)
 
     def show_message(self, title, message, msg_type=Gtk.MessageType.INFO):
         dialog = Gtk.MessageDialog(
