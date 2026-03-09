@@ -425,7 +425,7 @@ class GengSettingsTools(Gtk.Window):
         lang_combo = Gtk.ComboBoxText()
         lang_combo.append("th", "ไทย")
         lang_combo.append("en", "English")
-        lang_combo.set_active(0)  # Default to Thai
+        lang_combo.set_active(1)  # Default to English (ถ้า 0 => Thai)
         lang_combo.connect("changed", self.on_language_changed)
         lang_box.pack_start(lang_combo, True, True, 0)
         
@@ -727,8 +727,8 @@ class GengSettingsTools(Gtk.Window):
         label = Gtk.Label()
         label.set_markup(
             "<span size='x-large' weight='bold' foreground='#00ADB5'>Geng Settings Tools</span>\n"
-            "<span>เวอร์ชัน 2.0.5 (GTK Edition)</span>\n\n"
-            f"<b>{self.i18n.get('developer')}</b> คุณธรรมสรณ์ มุสิกพันธ์ (Geng)\n"
+            "<span>เวอร์ชัน 2.0.6 (GTK Edition)</span>\n\n"
+            f"<b>{self.i18n.get('developer')}</b> คุณธรรมสรณ์ มุสิกพันธ์ (เก่ง)\n"
             f"<b>{self.i18n.get('email')}</b> gtzx26@gmail.com\n\n"
             f"{self.i18n.get('thanks')}"
         )
