@@ -240,164 +240,138 @@ class I18n:
     }
     
     def __init__(self, lang='th'):
-        self.lang = lang if lang in self.TRANSLATIONS else 'th'
-    
-    def set_language(self, lang):
-        if lang in self.TRANSLATIONS:
-            self.lang = lang
+        self.lang = lang if lang in self.TRANSLATIONS else 'en'
     
     def get(self, key, *args):
-        """Get translated string with optional formatting"""
-        if key in self.TRANSLATIONS[self.lang]:
-            text = self.TRANSLATIONS[self.lang][key]
-            if args:
-                return text.format(*args)
-            return text
-        return key
+        text = self.TRANSLATIONS[self.lang].get(key, key)
+        if args:
+            return text.format(*args)
+        return text
+
+    def set_language(self, lang):
+        """Set language and update"""
+        if lang in self.TRANSLATIONS:
+            self.lang = lang
 
 
 class SettingsManager:
-    """Manage backup, restore, import, export of settings"""
-    
-    SETTINGS_KEYS = [
-        # Keyboard settings
-        ('org.gnome.desktop.input-sources', 'sources'),
-        ('org.gnome.desktop.input-sources', 'xkb-options'),
-        ('org.cinnamon.desktop.keybindings.wm', 'switch-input-source'),
-        ('org.cinnamon.desktop.keybindings.wm', 'switch-input-source-backward'),
-        
-        # UI settings
-        ('org.cinnamon.desktop.interface', 'gtk-theme'),
-        ('org.cinnamon.theme', 'name'),
-        ('org.cinnamon.desktop.interface', 'icon-theme'),
-        ('org.cinnamon.desktop.interface', 'cursor-theme'),
-        ('org.cinnamon.desktop.interface', 'font-name'),
-    ]
-    
-    @staticmethod
-    def get_current_settings():
-        """Get all current settings"""
-        settings = {
-            'timestamp': datetime.datetime.now().isoformat(),
-            'hostname': socket.gethostname(),
-            'user': getpass.getuser(),
-            'settings': {}
-        }
-        
-        for schema, key in SettingsManager.SETTINGS_KEYS:
-            try:
-                result = subprocess.run(
-                    ['gsettings', 'get', schema, key],
-                    capture_output=True,
-                    text=True,
-                    check=True
-                )
-                settings['settings'][f'{schema}:{key}'] = result.stdout.strip()
-            except:
-                settings['settings'][f'{schema}:{key}'] = None
-        
-        return settings
-    
-    @staticmethod
-    def apply_settings(settings_data):
-        """Apply settings from backup data"""
-        if 'settings' not in settings_data:
-            return False, "Invalid backup format"
-        
-        success_count = 0
-        fail_count = 0
-        
-        for key, value in settings_data['settings'].items():
-            if value is None or value == 'null':
-                continue
-                
-            try:
-                schema, setting = key.split(':', 1)
-                subprocess.run(
-                    ['gsettings', 'set', schema, setting, value],
-                    check=True,
-                    capture_output=True
-                )
-                success_count += 1
-            except:
-                fail_count += 1
-        
-        return True, f"Applied {success_count} settings, {fail_count} failed"
-    
-    @staticmethod
-    def backup_to_file(filepath):
-        """Backup settings to file"""
-        try:
-            settings = SettingsManager.get_current_settings()
-            with open(filepath, 'w', encoding='utf-8') as f:
-                json.dump(settings, f, indent=2, ensure_ascii=False)
-            return True, filepath
-        except Exception as e:
-            return False, str(e)
-    
-    @staticmethod
-    def restore_from_file(filepath):
-        """Restore settings from file"""
-        try:
-            with open(filepath, 'r', encoding='utf-8') as f:
-                settings = json.load(f)
-            return SettingsManager.apply_settings(settings)
-        except Exception as e:
-            return False, str(e)
+    """Manager for system settings and backup/restore"""
     
     @staticmethod
     def get_backup_dir():
-        """Get backup directory path"""
         backup_dir = os.path.expanduser("~/.config/geng-settings-tools/backups")
         os.makedirs(backup_dir, exist_ok=True)
         return backup_dir
     
     @staticmethod
     def get_default_backup_filename():
-        """Generate default backup filename"""
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        return f"geng_settings_backup_{timestamp}.json"
+        return f"gst_backup_{timestamp}.json"
+
+    @staticmethod
+    def get_current_settings():
+        """Get current system settings using gsettings"""
+        settings = {
+            'timestamp': datetime.datetime.now().isoformat(),
+            'user': getpass.getuser(),
+            'hostname': socket.gethostname(),
+            'keyboard': {
+                'sources': SettingsManager._get_gsettings("org.gnome.desktop.input-sources", "sources"),
+                'xkb_options': SettingsManager._get_gsettings("org.gnome.desktop.input-sources", "xkb-options"),
+                'switch_input': SettingsManager._get_gsettings("org.cinnamon.desktop.keybindings.wm", "switch-input-source"),
+                'switch_input_backward': SettingsManager._get_gsettings("org.cinnamon.desktop.keybindings.wm", "switch-input-source-backward"),
+            },
+            'ui': {
+                'gtk_theme': SettingsManager._get_gsettings("org.cinnamon.desktop.interface", "gtk-theme"),
+                'cinnamon_theme': SettingsManager._get_gsettings("org.cinnamon.theme", "name"),
+            }
+        }
+        return settings
+
+    @staticmethod
+    def _get_gsettings(schema, key):
+        try:
+            result = subprocess.run(["gsettings", "get", schema, key], capture_output=True, text=True, check=True)
+            return result.stdout.strip()
+        except:
+            return None
+
+    @staticmethod
+    def backup_to_file(filepath):
+        try:
+            settings = SettingsManager.get_current_settings()
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(settings, f, indent=4, ensure_ascii=False)
+            return True, filepath
+        except Exception as e:
+            return False, str(e)
+
+    @staticmethod
+    def restore_from_file(filepath):
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                settings = json.load(f)
+            return SettingsManager.apply_settings(settings)
+        except Exception as e:
+            return False, str(e)
+
+    @staticmethod
+    def apply_settings(settings):
+        """Apply settings from a dictionary"""
+        try:
+            kb = settings.get('keyboard', {})
+            if kb:
+                if kb.get('sources'):
+                    subprocess.run(f"gsettings set org.gnome.desktop.input-sources sources \"{kb['sources']}\"", shell=True)
+                if kb.get('xkb_options'):
+                    subprocess.run(f"gsettings set org.gnome.desktop.input-sources xkb-options \"{kb['xkb_options']}\"", shell=True)
+                if kb.get('switch_input'):
+                    subprocess.run(f"gsettings set org.cinnamon.desktop.keybindings.wm switch-input-source \"{kb['switch_input']}\"", shell=True)
+                if kb.get('switch_input_backward'):
+                    subprocess.run(f"gsettings set org.cinnamon.desktop.keybindings.wm switch-input-source-backward \"{kb['switch_input_backward']}\"", shell=True)
+
+            ui = settings.get('ui', {})
+            if ui:
+                if ui.get('gtk_theme'):
+                    subprocess.run(f"gsettings set org.cinnamon.desktop.interface gtk-theme {ui['gtk_theme']}", shell=True)
+                if ui.get('cinnamon_theme'):
+                    subprocess.run(f"gsettings set org.cinnamon.theme name {ui['cinnamon_theme']}", shell=True)
+            
+            return True, "Success"
+        except Exception as e:
+            return False, str(e)
 
 
 class GengSettingsTools(Gtk.Window):
     def __init__(self):
-        self.i18n = I18n('th')  # Default to Thai
-        super().__init__(title=self.i18n.get('window_title'))
-        self.set_default_size(950, 700)
-        self.set_border_width(10)
+        super().__init__(title="Geng Settings Tools")
+        self.set_default_size(800, 600)
         self.set_position(Gtk.WindowPosition.CENTER)
-
-        # Apply custom CSS
+        
+        # Load I18n
+        self.i18n = I18n()
+        self.set_title(self.i18n.get('window_title'))
+        
+        # Apply CSS for styling
         self.apply_css()
 
-        # Set application icon with fallback
-        icon_theme = Gtk.IconTheme.get_default()
-        if icon_theme.has_icon("geng-settings-tools"):
-            self.set_icon_name("geng-settings-tools")
-        else:
-            self.set_icon_name("applications-system")
-
+        # Main Layout
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.add(self.main_box)
 
-        # Left panel with language selector
-        left_panel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
-        left_panel.set_size_request(220, -1)
+        # Sidebar (Navigation)
+        self.sidebar = Gtk.StackSidebar()
+        self.sidebar.set_size_request(200, -1)
+        self.sidebar.get_style_context().add_class("sidebar")
         
-        # Language selector at top of sidebar
-        self.create_language_selector(left_panel)
-        
-        # Sidebar
-        self.stack_sidebar = Gtk.StackSidebar()
-        left_panel.pack_start(self.stack_sidebar, True, True, 0)
-        
+        # Content Area (Stack)
         self.stack = Gtk.Stack()
         self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
         self.stack.set_transition_duration(300)
-
-        self.stack_sidebar.set_stack(self.stack)
-
-        self.main_box.pack_start(left_panel, False, False, 0)
+        
+        self.sidebar.set_stack(self.stack)
+        
+        self.main_box.pack_start(self.sidebar, False, False, 0)
         self.main_box.pack_start(self.stack, True, True, 0)
 
         # Initialize pages
@@ -406,98 +380,56 @@ class GengSettingsTools(Gtk.Window):
         self.init_system_tools_page()
         self.init_gaming_page()
         self.init_ui_tweaks_page()
-        self.init_backup_page()  # New backup page
-        self.init_about_page()
-
-        self.show_all()
-
-    def create_language_selector(self, parent_box):
-        """Create language selector dropdown"""
-        lang_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
-        lang_box.set_margin_start(10)
-        lang_box.set_margin_end(10)
-        lang_box.set_margin_top(10)
-        lang_box.set_margin_bottom(5)
-        
-        lang_label = Gtk.Label(label="🌐")
-        lang_box.pack_start(lang_label, False, False, 0)
-        
-        lang_combo = Gtk.ComboBoxText()
-        lang_combo.append("th", "ไทย")
-        lang_combo.append("en", "English")
-        lang_combo.set_active(1)  # Default to English (ถ้า 0 => Thai)
-        lang_combo.connect("changed", self.on_language_changed)
-        lang_box.pack_start(lang_combo, True, True, 0)
-        
-        parent_box.pack_start(lang_box, False, False, 0)
-
-    def on_language_changed(self, combo):
-        """Handle language change"""
-        lang = combo.get_active_id()
-        self.i18n.set_language(lang)
-        self.refresh_ui()
-
-    def refresh_ui(self):
-        """Refresh all UI text when language changes"""
-        # Update window title
-        self.set_title(self.i18n.get('window_title'))
-        
-        # Clear and recreate all pages
-        for child in self.stack.get_children():
-            self.stack.remove(child)
-        
-        self.init_home_page()
-        self.init_keyboard_page()
-        self.init_system_tools_page()
-        self.init_gaming_page()
-        self.init_ui_tweaks_page()
         self.init_backup_page()
         self.init_about_page()
-        
+
         self.show_all()
 
     def apply_css(self):
-        """Apply custom CSS styling to the application"""
-        css_provider = Gtk.CssProvider()
-        css = b"""
-        .suggested-action {
-            background: #00ADB5;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        .suggested-action:hover {
-            background: #008C94;
-        }
-        .suggested-action:active {
-            background: #006B73;
-        }
-        .destructive-action {
-            background: #F05454;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        .destructive-action:hover {
-            background: #D34545;
-        }
-        frame {
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        frame:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        .language-selector {
-            background: #f0f0f0;
-            border-radius: 4px;
-        }
+        css = """
+            window {
+                background-color: #222831;
+                color: #EEEEEE;
+            }
+            .sidebar {
+                background-color: #393E46;
+                border-right: 1px solid #00ADB5;
+            }
+            label {
+                color: #EEEEEE;
+            }
+            button {
+                background-image: none;
+                background-color: #393E46;
+                color: #EEEEEE;
+                border-radius: 5px;
+                padding: 10px 20px;
+                border: 1px solid #00ADB5;
+            }
+            button:hover {
+                background-color: #00ADB5;
+                color: #222831;
+            }
+            button.suggested-action {
+                background-color: #00ADB5;
+                color: #222831;
+            }
+            button.destructive-action {
+                background-color: #FF2E63;
+                color: #EEEEEE;
+                border: 1px solid #FF2E63;
+            }
+            button.destructive-action:hover {
+                background-color: #E2174D;
+            }
+            frame {
+                border: 1px solid #393E46;
+                border-radius: 10px;
+                background-color: #2D333B;
+            }
         """
-        css_provider.load_from_data(css)
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_data(css.encode())
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(),
             css_provider,
@@ -737,8 +669,6 @@ class GengSettingsTools(Gtk.Window):
 
         # Donate Section
         donate_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        donate_box.set_margin_top(20)
-        donate_box.set_halign(Gtk.Align.CENTER)
         donate_box.set_valign(Gtk.Align.CENTER)
 
         donate_title = Gtk.Label()
@@ -749,8 +679,9 @@ class GengSettingsTools(Gtk.Window):
         qr_paths = [
             "/usr/share/gst-assets/qrcode.png",
             os.path.expanduser("~/.local/share/gst-assets/qrcode.png"),
-            "./assets/qrcode.png",
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "qrcode.png")
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "qrcode.png"),
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "qrcode.png"),
+            "./assets/qrcode.png"
         ]
 
         qr_found = False
