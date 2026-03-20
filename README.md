@@ -1,8 +1,8 @@
 # Geng Settings Tools (GST) 🛠️
 
-**Geng Settings Tools** เป็นแอปพลิเคชันที่ออกแบบมาเพื่อช่วยให้ผู้ใช้ Linux Mint Cinnam
+**Geng Settings Tools** เป็นแอปพลิเคชันที่ออกแบบมาเพื่อช่วยให้ผู้ใช้ Linux Mint 22.3 Cinnamon 
 อีกทั้งยังรองรับ Linux ดิสโทรอื่นๆที่เป็นตระกูล Debian เช่น Ubuntu,Debian,Kali,Pop! และ อื่นๆ)
-สามารถตั้งค่าระบบที่ซับซ้อนได้ง่ายๆ เพียงแค่ "คลิกเดียว" เหมาะสำหรับผู้ที่ย้ายมาจาก Windows หรือ macOS
+สามารถตั้งค่าระบบที่ซับซ้อนได้ง่ายๆ เพียงแค่ "คลิกเดียว" เหมาะสำหรับผู้ที่ย้ายมาจาก Windows หรือ MacOS 
 และ ที่ยังไม่คุ้นเคยกับการใช้ Terminal 
 
 ## ✨ คุณสมบัติหลัก (One-Click Solutions)
@@ -12,6 +12,7 @@
 - 🎬 **Multimedia Ready:** 
 - 🎮 **Gaming Ready:** ติดตั้ง Steam เครื่องมือสำหรับการเล่นเกม , wine เครื่องมือสำหรับกานรองรับใช้งานโปรแกรมต่างๆของระบบ Microsoft Windows
 - 🎨 **UI Tweaks:** ปรับแต่งหน้าตา ธีม ได้ง่ายๆ
+- 💾 **Backup user Data เมนูสำหรับ สำรองข้อมูลของผู้ใช้ สามารถเลือกไดร์ฟ อุปกรณ์ ที่เก็บไฟล์ได้  
 
 ## 🖥️ มาตรฐาน XApps
 GST เวอร์ชัน 2.0.6 ถูกพัฒนาใหม่ด้วย **GTK3 (PyGObject)** เพื่อให้มีความสวยงามและเป็นเนื้อเดียวกับ Linux Mint Cinnamon ตามมาตรฐาน XApps
@@ -31,10 +32,10 @@ GST เวอร์ชัน 2.0.6 ถูกพัฒนาใหม่ด้ว
 
 ## 🤝 การสนับสนุน (Support)
 หากคุณพบปัญหาหรือมีข้อเสนอแนะ สามารถเปิด Issue ได้ที่นี่ หรือสนับสนุนผู้พัฒนาผ่าน:
-- **กสิกรไทย(K-Bank):** 119-2-45517-7 (นาย ธรรมสรณ์ มุสิกพันธ์)  
-- **คลิกลิ๊งค์นี้👇** https://donate.stripe.com/5kQfZ9bID6tyeXj2tf4ko01  
+- **กสิกรไทย(K-Bank):** 119-2-45517-7 นาย ธรรมสรณ์ มุสิกพันธ์(เก่ง)
+- **คลิกลิ๊งค์นี้👇ไปยัง Payment Donate** https://donate.stripe.com/5kQfZ9bID6tyeXj2tf4ko01  
 - **Bitcoin(BTC):** bc1q9vyeatst52eef7mv6fp2dpalxc6qwt9aug5rlt  
-- **PayPal :** thammasorn2456@gmail.com
+- **PayPal (*ไม่แนะนำ*):** thammasorn2456@gmail.com
 
 ## ❤️ รายชื่อผู้สนับสนุนและช่วยเหลือ(Donate) ❤️
 
