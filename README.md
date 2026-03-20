@@ -33,8 +33,8 @@ GST เวอร์ชัน 2.0.6 ถูกพัฒนาใหม่ด้ว
 หากคุณพบปัญหาหรือมีข้อเสนอแนะ สามารถเปิด Issue ได้ที่นี่ หรือสนับสนุนผู้พัฒนาผ่าน:
 - **กสิกรไทย(K-Bank):** 119-2-45517-7 (นาย ธรรมสรณ์ มุสิกพันธ์)  
 - **คลิกลิ๊งค์นี้👇** https://donate.stripe.com/5kQfZ9bID6tyeXj2tf4ko01  
-- **PayPal:** thammasorn2456@gmail.com
-- **Bitcoin(BTC):** bc1q9vyeatst52eef7mv6fp2dpalxc6qwt9aug5rlt
+- **Bitcoin(BTC):** bc1q9vyeatst52eef7mv6fp2dpalxc6qwt9aug5rlt  
+- **PayPal :** thammasorn2456@gmail.com
 
 ## ❤️ รายชื่อผู้สนับสนุนและช่วยเหลือ(Donate) ❤️
 
