@@ -1,79 +1,88 @@
-# Geng Settings Tools (GST) 🛠️
+# Geng Settings Tools v2.1.0: Multi-Language Support
 
-**Geng Settings Tools** เป็นแอปพลิเคชันที่ออกแบบมาเพื่อช่วยให้ผู้ใช้ Linux Mint 22.3 Cinnamon 
-อีกทั้งยังรองรับ Linux ดิสโทรอื่นๆที่เป็นตระกูล Debian เช่น Ubuntu,Debian,Kali,Pop! และ อื่นๆ)
-สามารถตั้งค่าระบบที่ซับซ้อนได้ง่ายๆ เพียงแค่ "คลิกเดียว" เหมาะสำหรับผู้ที่ย้ายมาจาก Windows หรือ MacOS 
-และ ที่ยังไม่คุ้นเคยกับการใช้ Terminal 
+![Geng Settings Tools Icon](assets/icon.png)
 
-## ✨ คุณสมบัติหลัก (One-Click Solutions)
+## 🌟 Overview
 
-- ⌨️ **Keyboard & Language:** ตั้งค่าปุ่มสลับภาษา (Grave Accent ~) , Alt+Shift, ตั้งค่าคีลัดเอง ได้ทันที
-- 🚀 **System Programs Manager :** จัดการโปรแกรมต่างๆที่ติดตั้งทั้งหมดในเครื่อง แสดงรายชื่อโปรแกรมพร้อมด้วยปุ่ม ถอนการติดตั้ง, ล้างแคช, ลบแพ็กเกจที่ไม่ได้ใช้งาน, เพิ่มความเร็วให้ระบบ
-- 🎬 **Multimedia Ready:** 
-- 🎮 **Gaming Ready:** ติดตั้ง Steam เครื่องมือสำหรับการเล่นเกม , wine เครื่องมือสำหรับกานรองรับใช้งานโปรแกรมต่างๆของระบบ Microsoft Windows
-- 🎨 **UI Tweaks:** ปรับแต่งหน้าตา ธีม ได้ง่ายๆ
-- 💾 **Backup user Data เมนูสำหรับ สำรองข้อมูลของผู้ใช้ สามารถเลือกไดร์ฟ อุปกรณ์ ที่เก็บไฟล์ได้  
+Geng Settings Tools is a comprehensive utility designed for Linux Mint Cinnamon users, offering a streamlined approach to managing system settings, enhancing productivity, and customizing the desktop experience. With the release of **v2.1.0**, this tool now proudly supports over 30 languages, making it accessible to a global audience. From keyboard configurations to system updates and media downloads, Geng Settings Tools provides an intuitive graphical interface to simplify complex tasks.
 
-## 🖥️ มาตรฐาน XApps
-GST เวอร์ชัน 2.0.6 ถูกพัฒนาใหม่ด้วย **GTK3 (PyGObject)** เพื่อให้มีความสวยงามและเป็นเนื้อเดียวกับ Linux Mint Cinnamon ตามมาตรฐาน XApps
+## ✨ Key Features
 
-## 🛡️ ความปลอดภัย
-- ใช้ **Polkit (pkexec)** ในการขอสิทธิ์ Root เฉพาะเมื่อจำเป็น
-- คำสั่งทุกอย่างถูกตรวจสอบว่าปลอดภัยต่อระบบปฏิบัติการ
+*   **🌐 Multi-Language Support (New in v2.1.0):** Seamlessly switch between over 30 languages, including Thai, English, Lao, Japanese, Korean, Chinese, French, German, Spanish, Arabic, and many more. The entire user interface, including menus and labels, dynamically updates to reflect the chosen language.
+*   **⌨️ Keyboard Settings Management:** Easily configure keyboard layouts, shortcuts, and other input preferences.
+*   **🔄 System Updates:** Keep your system up-to-date with integrated update functionalities.
+*   **⬇️ Media Downloader:** Download videos and audio from various online sources directly through the application.
+*   **⚙️ General System Utilities:** Access a suite of tools for common system maintenance and customization tasks.
+*   **🖥️ Intuitive GUI:** A user-friendly graphical interface built with PyQt6 ensures ease of use for both novice and experienced users.
 
-## 📦 การติดตั้ง (Installation)
+## 🚀 Installation
 
-### สำหรับ Linux Mint / Ubuntu (.deb)
-1. ดาวน์โหลดไฟล์ `.deb` จากหน้า [Releases](https://github.com/GTZX26/geng-settings-tools/releases)
-2. ดับเบิลคลิกเพื่อติดตั้งผ่าน GDebi หรือใช้คำสั่ง:
-   ```bash
-   sudo apt install ./gst.deb
-   ```
+### Prerequisites
 
-## 🤝 การสนับสนุน (Support)
-หากคุณพบปัญหาหรือมีข้อเสนอแนะ สามารถเปิด Issue ได้ที่นี่ หรือสนับสนุนผู้พัฒนาผ่าน:
-- **กสิกรไทย(K-Bank):**  
-  119-2-45517-7  
-  นาย ธรรมสรณ์ มุสิกพันธ์ (เก่ง)  
+Before installing Geng Settings Tools, ensure you have the following dependencies:
 
-- **คลิกลิ๊งค์นี้👇ไปยัง Payment Donate** https://donate.stripe.com/5kQfZ9bID6tyeXj2tf4ko01  
+*   **Python 3:** The application is built with Python 3.
+*   **PyQt6:** The graphical user interface framework.
+*   **pkexec:** For securely executing commands with administrative privileges.
+*   **yt-dlp:** For media downloading functionalities.
 
-- **Bitcoin(BTC):** bc1q9vyeatst52eef7mv6fp2dpalxc6qwt9aug5rlt  
-- **PayPal (*ไม่แนะนำ*):** thammasorn2456@gmail.com
+### Installation Steps (for Debian/Ubuntu-based systems like Linux Mint)
 
-## ❤️ รายชื่อผู้สนับสนุนและช่วยเหลือ(Donate) ❤️
+1.  **Download the `.deb` package:**
+    Download the latest `GST.deb` package from the [GitHub Releases page](https://github.com/GTZX26/geng-settings-tools/releases/tag/v2.1.0).
 
-1.คุณนครินทร์ บ.  
-2.คุณทินกร ต.  
-3.คุณเบนซ์ ร้าน Benzo Sushi Bar & Grill  
-4.คุณไซนันต์ สะมะแอ  
-5.คุณโชคชัย จันทร์คำเรือง  
-6.คุณอังคณา รอบรู้ (ร้านเอิร์ทก็อปปี้ จ.แพร่)  
-7.คุณรื่นฤดี มุสิกพันธ์  
-8.คุณมะลิวรรณ หลวง.  
-9.คุณกรกช ก.(Toon YoungBao)  
-10.คุณปลวัชร ล.  
-11.คุณพิชิตชัย (เต้ บีทาเก้น เชียงใหม่)  
-12.คุณปัญญาศิริ พรมสุ  
-13.คุณปิติ ทองคำโฮ้ง (จ.แพร่)  
-14.คุณกิตติพันธ์ ตรี.  
-15.คุณสุเทพ ชูดวง  
-16.คุณศิรินาฏ (Shinspaco Group)  
-17.คุณสุทธิชัย เเซ่ใช้  
-18.คุณพัฒนา คุ. (พี่หมอ แม่แตง)  
-19.Alex Alexnanwin  
-20.คุณศิริลักษณ์ มุสิกพันธ์  
-21.สรศักดิ์ (PJ OA)  
-22.คุณวัชระ วัลลา  
-23.คุณวันเฉลิม อ.(วายุ ภูติ)  
-24.คุณสันติ (Ocean Spice Samui)  
-25.พระอาจารย์สถิตย์ (วัดป่าค่ายท่านมุก)  
-26.พระอาจารย์โกวิทย์ (วัดเกาะเสือ)  
-27.คุณธานินทร์ ทองเพิ่ม  
-28.พิสิทธิ์ มีผล  
+2.  **Open Terminal:**
+    Press `Ctrl + Alt + T` to open a new terminal window.
 
-🙏 ขอขอบคุณทุกท่านอย่างจริงใจ 🙏  
+3.  **Navigate to the download directory:**
+    ```bash
+    cd ~/Downloads
+    ```
+    (Replace `~/Downloads` with the actual path if you saved it elsewhere.)
 
+4.  **Install the package:**
+    ```bash
+    sudo dpkg -i GST.deb
+    ```
+    You may be prompted for your user password. Enter it and press `Enter`.
 
-## 📄 ใบอนุญาต (License)
-โครงการนี้อยู่ภายใต้ใบอนุญาต **GNU GPL-3.0**
+5.  **Resolve dependencies (if any):**
+    If `dpkg` reports any missing dependencies, run the following command:
+    ```bash
+    sudo apt install -f
+    ```
+
+## 💡 Usage
+
+After installation, you can launch Geng Settings Tools from your applications menu. Look for "Geng Settings Tools" or search for it.
+
+### Changing Language
+
+1.  Locate the language dropdown menu (usually indicated by a globe icon 🌐) within the application\'s interface.
+2.  Click on the dropdown and select your preferred language (e.g., `🇱🇦 ລາວ`, `🇯🇵 日本語`, `🇰🇷 한국어`).
+3.  The application\'s interface will instantly update to the selected language.
+
+## ⚠️ Troubleshooting
+
+*   **Application not launching or PyQt6 errors:** Ensure `python3-pyqt6` is correctly installed. You might need to run `sudo apt install python3-pyqt6`.
+*   **Media download features not working:** Verify that `yt-dlp` is installed (`sudo apt install yt-dlp`).
+*   **Frequent password prompts:** This is normal for functions requiring administrative privileges. `pkexec` is used to handle these securely.
+*   **Incorrect translations:** While extensive efforts have been made for accurate translations, some phrases might appear awkward due to automated translation. Please report any issues, and contributions for better translations are always welcome!
+
+## 🤝 Contributing
+
+We welcome contributions to Geng Settings Tools! If you have suggestions, bug reports, or would like to contribute code or translations, please visit our [GitHub Repository](https://github.com/GTZX26/geng-settings-tools).
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## 📞 Contact
+
+For support or inquiries, please contact Thammasorn Musikapun at gtzx26@gmail.com.
+
+---
+
+**Developed by:** Manus AI (น้องเกต)
+**Version:** 2.1.0
+**Date:** March 21, 2026
