@@ -5951,17 +5951,28 @@ if __name__ == "__main__":
         print("Error: No display found. Please run this program in a graphical environment.")
         sys.exit(1)
 
+    app = QApplication(sys.argv)
+    
+    # ย้ายการทำ Log ไปหลังสร้าง QApplication เผื่อมีปัญหาเรื่อง GUI
     log_dir = os.path.expanduser("~/.local/share/geng-tools")
     os.makedirs(log_dir, exist_ok=True)
     log_path = os.path.join(log_dir, "geng-tools.log")
-    try:
-        _log_file = open(log_path, "a")
-        sys.stdout = _log_file
-        sys.stderr = _log_file
-    except Exception:
-        pass
+    
+    # พิมพ์บอกใน Terminal ด้วยว่าจะเก็บ Log ไว้ที่ไหน
+    print(f"Starting Geng Settings Tools... Log will be saved to: {log_path}")
+    
+    # คอมเมนต์ส่วน redirect stdout/stderr ไว้ก่อนเพื่อให้พี่เก่งเห็น Error ใน Terminal ได้ทันที
+    # try:
+    #     _log_file = open(log_path, "a")
+    #     sys.stdout = _log_file
+    #     sys.stderr = _log_file
+    # except Exception:
+    #     pass
 
-    app = QApplication(sys.argv)
-    window = GengSettingsTools()
-    window.show()
-    sys.exit(app.exec())
+    try:
+        window = GengSettingsTools()
+        window.show()
+        sys.exit(app.exec())
+    except Exception as e:
+        print(f"Fatal Error: {e}")
+        sys.exit(1)
