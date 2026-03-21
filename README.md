@@ -83,6 +83,11 @@ For support or inquiries, please contact Thammasorn Musikapun at gtzx26@gmail.co
 
 ---
 
-**Developed by:** Manus AI (น้องเกต)
-**Version:** 2.1.0
-**Date:** March 21, 2026
+**Developed by:**   
+** 𝙂𝙀𝙉𝙂 𝕀𝕟𝕗𝕚𝕟𝕚𝕥𝕪 (คุณเก่ง)**  
+** DeepSeek AI**  
+** Manus AI (น้องเกต)**  
+** Version:** 2.1.0  
+** Date:** March 21, 2026  
+  
+
