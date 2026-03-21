@@ -3,7 +3,7 @@
 # Geng Settings Tools Build Script
 # สร้างไฟล์ .deb สำหรับติดตั้งใน Linux Mint / Ubuntu
 
-VERSION="2.0.6"
+VERSION="2.1.0"
 PKG_NAME="geng-settings-tools"
 BUILD_DIR="build_pkg"
 
